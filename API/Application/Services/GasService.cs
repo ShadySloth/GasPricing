@@ -21,20 +21,21 @@ public class GasService : IGasService
 
         var pricePerLiter = await GetGasPrice(refuelDto.GasTypeName);
 
-        var discountPrecentage = 1.00;
+        var discountPercentage = 1.00;
         if (refuelDto.Membership)
         {
-            discountPrecentage = 0.90;
+            discountPercentage = 0.90;
         }
 
-        var totalPrice = refuelDto.Liters switch
+        discountPercentage = refuelDto.Liters switch
         {
-            <= 20 => pricePerLiter * refuelDto.Liters,
-            <= 50 => pricePerLiter * refuelDto.Liters + pricePerLiter * (discountPrecentage - 0.05) * (refuelDto.Liters - 20),
-            <= 100 => pricePerLiter * refuelDto.Liters + pricePerLiter * (discountPrecentage - 0.05) * (refuelDto.Liters - 30),
-            > 100 => pricePerLiter * refuelDto.Liters + pricePerLiter * (discountPrecentage - 0.05) * (refuelDto.Liters - 50)
+            <= 50 => discountPercentage - 0.05,
+            <= 100 => discountPercentage - 0.10,
+            > 100 => discountPercentage - 0.15
         };
 
+        var totalPrice = (refuelDto.Liters * pricePerLiter) * discountPercentage;
+        
         return new RefuelPriceDto
         {
             TotalPrice = totalPrice
