@@ -44,10 +44,17 @@ public class GasService : IGasService
 
     private async Task<double> GetGasPrice(string gasTypeName)
     {
+        if (string.IsNullOrEmpty(gasTypeName))
+        {
+            throw new ArgumentNullException(nameof(gasTypeName),"Gas type name cannot be null or empty");
+        }
+        
         var gasType = await _gasTypeRepository.GetGasTypeByName(gasTypeName);
-
+        
         if (gasType == null)
-            throw new ArgumentException("Invalid gas type");
+        {
+            throw new ArgumentException("Invalid gas type.");
+        }
 
         return gasType.Price;
     }
