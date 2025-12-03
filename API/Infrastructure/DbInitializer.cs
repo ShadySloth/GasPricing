@@ -16,7 +16,7 @@ public class DbInitializer : IDbInitializer
         {
             new GasType { Id = 1, Name = "Regular", Price = 12.70 },
             new GasType { Id = 2, Name = "Premium", Price = 14.50 },
-            new GasType { Id = 3, Name = "Diesel", Price = 7.00 }
+            new GasType { Id = 3, Name = "Diesel", Price = 7.20 }
         };
         
         context.GasTypes.AddRange(gasTypes);

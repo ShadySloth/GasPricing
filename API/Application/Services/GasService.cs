@@ -29,6 +29,7 @@ public class GasService : IGasService
 
         discountPercentage = refuelDto.Liters switch
         {
+            <= 20 => discountPercentage,
             <= 50 => discountPercentage - 0.05,
             <= 100 => discountPercentage - 0.10,
             > 100 => discountPercentage - 0.15
