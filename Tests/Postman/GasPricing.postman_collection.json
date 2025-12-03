@@ -4,16 +4,900 @@
 		"name": "GasPricing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37291644",
-		"_collection_link": "https://software-quality-compulsory.postman.co/workspace/software-quality-compulsory-Wor~c67ab338-10a6-48ee-a91f-4d138544b69c/collection/37291644-ee550cea-564d-4e09-84a8-7d9aca60047b?action=share&source=collection_link&creator=37291644"
+		"_collection_link": "https://software-quality-compulsory.postman.co/workspace/c67ab338-10a6-48ee-a91f-4d138544b69c/collection/37291644-ee550cea-564d-4e09-84a8-7d9aca60047b?action=share&source=collection_link&creator=37291644"
 	},
 	"item": [
 		{
-			"name": "New Request",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
+			"name": "Membership",
+			"item": [
+				{
+					"name": "Calculate gas price regular",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = true;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Regular gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(539.75);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price premium",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Premium\";\r",
+									"var membership = true;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Premium gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(616.25);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price diesel",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Diesel\";\r",
+									"var membership = true;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Diesel gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(306);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "No membership",
+			"item": [
+				{
+					"name": "Calculate gas price regular no membership",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = false;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Regular gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(603.25);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price premium no membership",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Premium\";\r",
+									"var membership = false;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Premium gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(688.75);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price diesel no membership",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Diesel\";\r",
+									"var membership = false;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Diesel gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(342);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Errors",
+			"item": [
+				{
+					"name": "Calculate gas price 0 liters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 0;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = true;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Liters is 0\", function(){\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.expect(pm.response.text()).to.include(\"ArgumentOutOfRangeException: Liters must be greater than zero (Parameter 'Liters')\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price invalid gas type",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Milk\";\r",
+									"var membership = true;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Invalid gas type\", function(){\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.expect(pm.response.text()).to.include(\"ArgumentException: Invalid gas type\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price empty gas type",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"\";\r",
+									"var membership = true;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Invalid gas type\", function(){\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.expect(pm.response.text()).to.include(\"ArgumentNullException: Gas type name cannot be null or empty (Parameter 'gasTypeName')\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price negative liters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = -50;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = true;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Liters is negative\", function(){\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.expect(pm.response.text()).to.include(\"ArgumentOutOfRangeException: Liters must be greater than zero (Parameter 'Liters')\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Varying liters",
+			"item": [
+				{
+					"name": "Calculate gas price <=20",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 20;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = false;\r",
+									"var expectedPrice = liters * 12.70;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"<=20 gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price <=50",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 50;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = false;\r",
+									"var expectedPrice = liters * 12.70 * 0.95;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"<=50 gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price <=100",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 100;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = false;\r",
+									"var expectedPrice = liters * 12.70 * 0.90;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"<=100 gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calculate gas price >100",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var liters = 150;\r",
+									"var gasType = \"Regular\";\r",
+									"var membership = false;\r",
+									"var expectedPrice = liters * 12.70 * 0.85;\r",
+									"\r",
+									"pm.environment.set(\"liters\", liters);\r",
+									"pm.environment.set(\"gasType\", gasType);\r",
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\">100 gas price is correct\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"liters\": \"{{liters}}\",\r\n  \"gasTypeName\": \"{{gasType}}\",\r\n  \"membership\": {{membership}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}api/Gas",
+							"host": [
+								"{{baseURL}}api"
+							],
+							"path": [
+								"Gas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
 		}
 	]
 }
