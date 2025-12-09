@@ -29,7 +29,7 @@ jobs:
 
       - name: Scan SBOM
         run: |
-          grype sbom:sbom.json -o cyclonedx > scan.json
+          grype sbom:sbom.json -o json > scan.json
 
       - name: Upload SBOM and Scan Results as Artifacts
         uses: actions/upload-artifact@v4
