@@ -18,6 +18,11 @@ jobs:
       - name: Build
         run: dotnet build GasPricing.sln --output buildOutput
 
+      - name: Show built files
+        run: |
+          echo "Contents of buildOutput:"
+          ls -la ./buildOutput || true
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -33,6 +38,14 @@ jobs:
         with:
           name: buildOutput
           path: buildOutput
+
+      - name: Show downloaded files
+        run: |
+          echo "Contents of buildOutput after download:"
+          ls -la ./buildOutput || true
+
+      - name: Prepare SBOM dir
+        run: mkdir -p ./sbom
 
       - name: Generate SBOM
         run: |
