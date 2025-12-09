@@ -1,12 +1,12 @@
 name: Deployment Pipeline
 
 on:
-  workflow_dispatch: 
-    
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs: 
+    outputs:
       build-artifact: buildOutput
     steps:
       - uses: actions/checkout@v4
@@ -14,10 +14,10 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
-          
+
       - name: Build
         run: dotnet build GasPricing.sln --output buildOutput
-      
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -39,9 +39,9 @@ jobs:
         curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
         chmod +x $RUNNER_TEMP/sbom-tool
         $RUNNER_TEMP/sbom-tool generate -b ./buildOutput -bc . -pn SBOM -pv 1.0.0 -ps GasPricing
-            
+
         - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
-          with:
-            name: SBOM
-            path: ./sbom
+        with:
+          name: SBOM
+          path: ./sbom
