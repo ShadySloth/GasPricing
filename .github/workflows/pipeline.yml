@@ -17,14 +17,30 @@ jobs:
       - name: Build
         run: dotnet build GasPricing.sln --output buildOutput
       
-      - name: Generate SBOM
-        run: |
-          curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
-          chmod +x $RUNNER_TEMP/sbom-tool
-          $RUNNER_TEMP/sbom-tool generate -b ./buildOutput -bc . -pn SBOM -pv 1.0.0 -ps GasPricing
-      
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
+          name: buildOutput
           path: buildOutput
   
+  sbom:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: buildOutput
+          path: buildOutput
+
+            - name: Generate SBOM
+              run: |
+                curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
+                chmod +x $RUNNER_TEMP/sbom-tool
+                $RUNNER_TEMP/sbom-tool generate -b ./buildOutput -bc . -pn SBOM -pv 1.0.0 -ps GasPricing
+            
+            - name: Upload SBOM artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: SBOM
+                path: ./sbom
