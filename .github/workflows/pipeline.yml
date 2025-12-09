@@ -40,7 +40,7 @@ jobs:
           chmod +x $RUNNER_TEMP/sbom-tool
           $RUNNER_TEMP/sbom-tool generate -b ./buildOutput -bc . -pn SBOM -pv 1.0.0 -ps GasPricing
 
-        - name: Upload SBOM artifact
+      - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
         with:
           name: SBOM
