@@ -4,57 +4,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    outputs:
-      build-artifact: buildOutput
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
-
-      - name: Publish
-        run: dotnet publish GasPricing.sln -c Release -o publish
-
-      - name: Show built files
-        run: |
-          echo "Contents of publish:"
-          ls -la ./publish || true
-
-      - name: Upload publish artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: publish
-          path: publish
-  
   sbom:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download publish artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: publish
-          path: publish
-
-      - name: Show downloaded files
+      - name: Install Syft
         run: |
-          echo "Contents of publish after download:"
-          ls -la ./publish || true
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Prepare SBOM dir
-        run: mkdir -p ./sbom
+      - name: Install Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Generate SBOM
         run: |
-          curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
-          chmod +x $RUNNER_TEMP/sbom-tool
-          $RUNNER_TEMP/sbom-tool generate -b ./publish -bc . -pn SBOM -pv 1.0.0 -ps GasPricing
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+          syft . -o cyclonedx-json > sbom.json
 
-      - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v4
+      - name: Scan SBOM
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+          grype sbom:sbom.json -o json > scan.json
+
+      - name: Upload SBOM and Scan Results as Artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: SBOM
-          path: ./sbom
+          name: Reports
+          path: |
+            sbom.json
+            scan.json
