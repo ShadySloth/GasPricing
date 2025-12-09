@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: 9.0.x
       
-      - name: Retore .NET Dependencies
+      - name: .NET Build
         run: dotnet build GasPricing.sln -o buildOutput
 
       - name: Install Syft & Grype
