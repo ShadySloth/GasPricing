@@ -16,7 +16,7 @@ jobs:
           dotnet-version: 9.0.x
       
       - name: Retore .NET Dependencies
-        run: dotnet restore
+        run: dotnet build GasPricing.sln -o buildOutput
 
       - name: Install Syft & Grype
         run: |
@@ -25,7 +25,7 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          syft . -o cyclonedx-json > sbom.json
+          syft buildOutput -o cyclonedx-json > sbom.json
 
       - name: Scan SBOM
         run: |
