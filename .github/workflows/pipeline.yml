@@ -6,7 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+    outputs: 
+      build-artifact: buildOutput
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
