@@ -15,34 +15,34 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Build
-        run: dotnet build GasPricing.sln --output buildOutput
+      - name: Publish
+        run: dotnet publish GasPricing.sln -c Release -o publish
 
       - name: Show built files
         run: |
-          echo "Contents of buildOutput:"
-          ls -la ./buildOutput || true
+          echo "Contents of publish:"
+          ls -la ./publish || true
 
-      - name: Upload build artifact
+      - name: Upload publish artifact
         uses: actions/upload-artifact@v4
         with:
-          name: buildOutput
-          path: buildOutput
+          name: publish
+          path: publish
   
   sbom:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download build artifact
+      - name: Download publish artifact
         uses: actions/download-artifact@v4
         with:
-          name: buildOutput
-          path: buildOutput
+          name: publish
+          path: publish
 
       - name: Show downloaded files
         run: |
-          echo "Contents of buildOutput after download:"
-          ls -la ./buildOutput || true
+          echo "Contents of publish after download:"
+          ls -la ./publish || true
 
       - name: Prepare SBOM dir
         run: mkdir -p ./sbom
@@ -51,7 +51,7 @@ jobs:
         run: |
           curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
           chmod +x $RUNNER_TEMP/sbom-tool
-          $RUNNER_TEMP/sbom-tool generate -b buildOutput -bc . -pn SBOM -pv 1.0.0 -ps GasPricing
+          $RUNNER_TEMP/sbom-tool generate -b ./publish -bc . -pn SBOM -pv 1.0.0 -ps GasPricing
 
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
