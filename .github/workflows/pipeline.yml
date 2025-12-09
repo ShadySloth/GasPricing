@@ -7,28 +7,26 @@ jobs:
   sbom:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Syft
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Syft & Grype
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
-
-      - name: Install Grype
-        run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Generate SBOM
         run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
           syft . -o cyclonedx-json > sbom.json
 
       - name: Scan SBOM
         run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
           grype sbom:sbom.json -o json > scan.json
 
       - name: Upload SBOM and Scan Results as Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Reports
+          name: SBOM-and-Scan-Results
           path: |
             sbom.json
             scan.json
