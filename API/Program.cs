@@ -17,8 +17,40 @@ builder.Services.AddScoped<IGasTypeRepository, GasTypeRepository>();
 builder.Services.AddTransient<IDbInitializer, DbInitializer>();
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<GasContext>(options =>
-    options.UseInMemoryDatabase("GasDb"));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<GasContext>(options =>
+        options.UseInMemoryDatabase("GasDb"));
+}
+else
+{
+    string hostname = "localhost";
+    string port = "6002";
+    
+    string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "";
+    string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "";
+
+    // Read the PostgreSQL username and password from Docker secret files
+    var postgresUserFile = "/run/secrets/db_user";
+    var postgresPasswordFile = "/run/secrets/db_password";
+
+    if (File.Exists(postgresUserFile))
+    {
+        username = File.ReadAllText(postgresUserFile).Trim();
+        Console.WriteLine($"username file found: {username}");
+    }
+
+    if (File.Exists(postgresPasswordFile))
+    {
+        password = File.ReadAllText(postgresPasswordFile).Trim();
+    }
+
+    builder.Services.AddDbContext<GasContext>(options =>
+    {
+        options.UseNpgsql(
+            $"Host={hostname};Port={port};Database=postgres;Username={username};Password={password};Trust Server Certificate=true;");
+    });
+}
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

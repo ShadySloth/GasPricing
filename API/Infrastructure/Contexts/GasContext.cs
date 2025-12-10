@@ -10,8 +10,4 @@ public class GasContext : DbContext
     }
     
     public DbSet<GasType> GasTypes { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-    }
 }

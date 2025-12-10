@@ -1,0 +1,34 @@
+﻿services:
+  backend:
+    image: hoeeg79/dls_compolsory2_backend:latest
+    ports:
+      - 6001:8080
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_user
+      - db_password
+    depends_on:
+      - db-postgres
+  db-postgres:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    hostname: db-postgres
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_user
+      - db_password
+    ports:
+      - 6002:5432
+
+secrets:
+  db_user:
+    file: db_user.txt
+  db_password:
+    file: db_password.txt
