@@ -1,7 +1,40 @@
 name: Deployment Pipeline
 
 on:
-  workflow_dispatch: 
-    
+  workflow_dispatch:
+
 jobs:
-  
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      
+      - name: .NET Build
+        run: dotnet build GasPricing.sln -o buildOutput
+
+      - name: Install Syft & Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Generate SBOM
+        run: |
+          syft buildOutput -o cyclonedx-json > sbom.json
+
+      - name: Scan SBOM
+        run: |
+          grype sbom:sbom.json -o json > scan.json
+
+      - name: Upload SBOM and Scan Results as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SBOM-and-Scan-Results
+          path: |
+            sbom.json
+            scan.json
