@@ -2,6 +2,7 @@ name: Deployment Pipeline
 
 on:
   workflow_dispatch:
+  pull_request:
 
 jobs:
   sbom:
@@ -28,16 +29,18 @@ jobs:
           syft buildOutput -o cyclonedx-json > sbom.json
 
       - name: Scan SBOM
-        run: |
-          grype sbom:sbom.json -o json > scan.json
+        uses: anchore/scan-action@v6
+        with: 
+          sbom: sbom.json
+          fail-build: true
+          severity-cutoff: medium
 
-      - name: Upload SBOM and Scan Results as Artifacts
+      - name: Upload SBOM as Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SBOM-and-Scan-Results
+          name: SBOM-Results
           path: |
             sbom.json
-            scan.json
 
   sonarqube:
     name: Analyze with SonarQube
