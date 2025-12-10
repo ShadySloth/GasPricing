@@ -4,56 +4,50 @@ on:
   workflow_dispatch:
 
 jobs:
-  # sbom:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v4
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v4
-  #       with:
-  #         dotnet-version: 9.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
       
-  #     - name: .NET Build
-  #       run: dotnet build GasPricing.sln -o buildOutput
+      - name: .NET Build
+        run: dotnet build GasPricing.sln -o buildOutput
 
-  #     - name: Install Syft & Grype
-  #       run: |
-  #         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
-  #         curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+      - name: Install Syft & Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
-  #     - name: Generate SBOM
-  #       run: |
-  #         syft buildOutput -o cyclonedx-json > sbom.json
+      - name: Generate SBOM
+        run: |
+          syft buildOutput -o cyclonedx-json > sbom.json
 
-  #     - name: Scan SBOM
-  #       run: |
-  #         grype sbom:sbom.json -o json > scan.json
+      - name: Scan SBOM
+        run: |
+          grype sbom:sbom.json -o json > scan.json
 
-  #     - name: Upload SBOM and Scan Results as Artifacts
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: SBOM-and-Scan-Results
-  #         path: |
-  #           sbom.json
-  #           scan.json
+      - name: Upload SBOM and Scan Results as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SBOM-and-Scan-Results
+          path: |
+            sbom.json
+            scan.json
 
   sonarqube:
     name: Analyze with SonarQube
-    # needs: sbom
+    needs: sbom
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      # - name: Set up JDK 17
-      #   uses: actions/setup-java@v4
-      #   with:
-      #     java-version: 17
-      #     distribution: 'zulu'
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
