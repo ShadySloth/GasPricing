@@ -3,7 +3,8 @@ name: Deployment Pipeline
 on:
   workflow_dispatch:
   pull_request:
-
+    branches:
+      - main
 jobs:
   sbom:
     runs-on: ubuntu-latest
