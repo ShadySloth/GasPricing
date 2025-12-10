@@ -20,5 +20,9 @@ public class GasFixture
         
         GasTypeRepositoryMock.Setup(repo => repo.GetGasTypeByName("Diesel"))
             .ReturnsAsync(new GasType { Id = 3, Name = "Diesel", Price = 7.20 });
+        
+        GasTypeRepositoryMock.Setup(repo => repo.GetGasTypeByName(It.Is<string>(n =>
+                n != "Regular" && n != "Premium" && n != "Diesel")))
+            .ReturnsAsync((GasType?)null);
     }
 }
