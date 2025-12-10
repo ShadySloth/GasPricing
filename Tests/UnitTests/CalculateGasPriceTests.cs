@@ -108,7 +108,7 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
         // Arrange
         var refuelDto = new RefuelDto
         {
-            GasTypeName = null,
+            GasTypeName = null!,
             Liters = 10,
             Membership = false
         };

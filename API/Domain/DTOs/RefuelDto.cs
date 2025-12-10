@@ -2,7 +2,7 @@
 
 public class RefuelDto
 {
-    public int Liters {get; set;} = 0;
-    public string GasTypeName {get; set; } = string.Empty;
-    public bool Membership {get; set;} = false;
+    public int Liters { get; set; }
+    public required string GasTypeName { get; set; }
+    public bool Membership { get; set; }
 }
