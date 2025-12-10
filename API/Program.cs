@@ -36,10 +36,10 @@ if (app.Environment.IsDevelopment())
         var services = scope.ServiceProvider;
         var dbContext = services.GetService<GasContext>();
         var dbInitializer = services.GetService<IDbInitializer>();
-        dbInitializer.Initialize(dbContext);
+        dbInitializer!.Initialize(dbContext!);
     }
 }
 
 app.UseAuthorization();
 app.MapControllers();
-app.Run();
+await app.RunAsync();
