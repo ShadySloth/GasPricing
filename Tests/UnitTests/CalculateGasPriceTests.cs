@@ -63,7 +63,7 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
     [Theory]
     [InlineData("Regular", -10, false)]
     [InlineData("Premium", 0, true)]
-    public async Task CalculateGasPrice_ThrowsArgumentOutOfRangeException_ForInvalidLiters(string gasTypeName, int liters, bool membership)
+    public async Task CalculateGasPrice_ForInvalidLiters_ThrowsArgumentOutOfRangeException(string gasTypeName, int liters, bool membership)
     {
         // Arrange
         var refuelDto = new RefuelDto
@@ -83,7 +83,7 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
     }
     
     [Fact]
-    public async Task CalculateGasPrice_ThrowsArgumentException_ForInvalidGasType()
+    public async Task CalculateGasPrice_ForInvalidGasType_ThrowsArgumentException()
     {
         // Arrange
         var refuelDto = new RefuelDto
@@ -103,7 +103,7 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
     }
     
     [Fact]
-    public async Task CalculateGasPrice_ThrowsArgumentNullException_ForNullGasTypeName()
+    public async Task CalculateGasPrice_ForNullGasTypeName_ThrowsArgumentNullException()
     {
         // Arrange
         var refuelDto = new RefuelDto
