@@ -2,7 +2,7 @@
 
 public class RefuelDto
 {
-    public int Liters { get; set; }
+    public required int Liters { get; set; }
     public required string GasTypeName { get; set; }
-    public bool Membership { get; set; }
+    public required bool Membership { get; set; }
 }
