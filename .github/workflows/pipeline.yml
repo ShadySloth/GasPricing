@@ -2,9 +2,12 @@ name: Deployment Pipeline
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
       - feat-dast-and-jwt
+  pull_request:
+    branches:
+      - master
 
 jobs:
   sbom:
