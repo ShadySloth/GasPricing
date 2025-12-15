@@ -45,7 +45,7 @@ jobs:
             --user root \
             -v $PWD/zap-work:/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
-            -t http://api:8080 \
+            -t http://api:5801 \
             -r zap-report.html \
             -J zap-report.json \
             -z "
