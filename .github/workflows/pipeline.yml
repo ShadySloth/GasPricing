@@ -10,7 +10,7 @@ on:
 jobs:
 
   dast:
-    name: Run DAST
+    name: DAST
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
