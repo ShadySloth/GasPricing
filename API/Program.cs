@@ -28,6 +28,7 @@ builder.Configuration["Jwt:ExpiresMinutes"] = Environment.GetEnvironmentVariable
                                               ?? "60";
 builder.Configuration["Password:Pepper"] = Environment.GetEnvironmentVariable("PASSWORD_PEPPER") 
                                            ?? throw new Exception("PASSWORD_PEPPER missing");
+//test
 
 // EF Core for Auth
 builder.Services.AddDbContext<AuthDbContext>(options =>
