@@ -16,13 +16,18 @@ var builder = WebApplication.CreateBuilder(args);
 var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
 Env.Load(envPath);
 
-// Tilføj pepper og JWT config til builder.Configuration
-Environment.SetEnvironmentVariable("JWT_KEY", "TEST_SUPER_SECRET_KEY");
-Environment.SetEnvironmentVariable("JWT_ISSUER", "TestIssuer");
-Environment.SetEnvironmentVariable("JWT_AUDIENCE", "TestAudience");
-Environment.SetEnvironmentVariable("JWT_EXPIRES_MINUTES", "60");
-Environment.SetEnvironmentVariable("PASSWORD_PEPPER", "TEST_PEPPER");
 
+// Tilføj alle nødvendige envs til Configuration
+builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_KEY") 
+                                   ?? throw new Exception("JWT_KEY missing");
+builder.Configuration["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER") 
+                                      ?? throw new Exception("JWT_ISSUER missing");
+builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE") 
+                                        ?? throw new Exception("JWT_AUDIENCE missing");
+builder.Configuration["Jwt:ExpiresMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRES_MINUTES") 
+                                              ?? "60";
+builder.Configuration["Password:Pepper"] = Environment.GetEnvironmentVariable("PASSWORD_PEPPER") 
+                                           ?? throw new Exception("PASSWORD_PEPPER missing");
 
 // EF Core for Auth
 builder.Services.AddDbContext<AuthDbContext>(options =>

@@ -12,22 +12,19 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepo;
     private readonly IConfiguration _config;
-    private readonly string _pepper;
 
     public AuthService(IUserRepository userRepo, IConfiguration config)
     {
         _userRepo = userRepo;
         _config = config;
 
-        // Hent pepper fra Configuration nu
-        _pepper = _config["Password:Pepper"]
-            ?? throw new Exception("PASSWORD_PEPPER missing");
+
     }
 
     public async Task RegisterAsync(string userName, string password)
     {
         var salt = BCrypt.Net.BCrypt.GenerateSalt();
-        var hash = BCrypt.Net.BCrypt.HashPassword(password + _pepper, salt);
+        var hash = BCrypt.Net.BCrypt.HashPassword(password, salt);
 
         var user = new User
         {
@@ -55,7 +52,7 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException();
 
         var isValid = BCrypt.Net.BCrypt.Verify(
-            password + _pepper,
+            password,
             user.PasswordHash.Hash
         );
 
