@@ -38,7 +38,7 @@ jobs:
 
       - name: Run OWASP ZAP (authenticated)
         run: |
-          docker pull owasp/zap2docker-stable:latest
+          docker pull owasp/zap2docker-stable
           docker run --rm \
             -v $PWD:/zap/wrk \
             owasp/zap2docker-stable:latest zap-baseline.py \
