@@ -103,20 +103,13 @@ jobs:
 
           "${{ runner.temp }}/scanner/dotnet-sonarscanner" end \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-  
-  dast:
-    name: DAST
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
 
-      - name: Run DAST workflow
-        uses: ./.github/workflows/dast.yml
-        with:
-          jwt_token: ${{ secrets.TEST_JWT_TOKEN }}
-          jwt_key: ${{ secrets.JWT_KEY }}
-          jwt_issuer: ${{ secrets.JWT_ISSUER }}
-          jwt_audience: ${{ secrets.JWT_AUDIENCE }}
-          jwt_expires_minutes: ${{ secrets.JWT_EXPIRES_MINUTES }}
-          password_pepper: ${{ secrets.PASSWORD_PEPPER }}
+  dast:
+    uses: ./.github/workflows/dast.yml
+    secrets:
+      TEST_JWT_TOKEN: ${{ secrets.TEST_JWT_TOKEN }}
+      JWT_KEY: ${{ secrets.JWT_KEY }}
+      JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
+      JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+      JWT_EXPIRES_MINUTES: ${{ secrets.JWT_EXPIRES_MINUTES }}
+      PASSWORD_PEPPER: ${{ secrets.PASSWORD_PEPPER }}
