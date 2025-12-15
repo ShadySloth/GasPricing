@@ -16,5 +16,6 @@ jobs:
           name: shadysloth/ExamAPI
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          dockerfile: API/Dockerfile
+          dockerfile: Dockerfile
+          workdir: API
           tags: "latest"
