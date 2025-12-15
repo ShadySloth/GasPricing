@@ -1,0 +1,58 @@
+﻿name: DAST Scan
+
+on:
+  workflow_call:
+    inputs:
+      jwt_token:
+        required: true
+        type: string
+
+jobs:
+  dast:
+    runs-on: ubuntu-latest
+
+    services:
+      api:
+        image: mcr.microsoft.com/dotnet/aspnet:9.0
+        ports:
+          - 5000:5000
+        options: >-
+          --health-cmd "curl --fail http://localhost:5000/health || exit 1"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          JWT_KEY: ${{ secrets.JWT_KEY }}
+          JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
+          JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+          JWT_EXPIRES_MINUTES: ${{ secrets.JWT_EXPIRES_MINUTES }}
+          PASSWORD_PEPPER: ${{ secrets.PASSWORD_PEPPER }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Wait for API
+        run: |
+          echo "Waiting for API to be ready..."
+          for i in {1..12}; do
+            curl --fail http://localhost:5000/health && break
+            sleep 5
+          done
+
+      - name: Run OWASP ZAP baseline scan
+        run: |
+          docker pull owasp/zap2docker-stable
+          mkdir -p zap-reports
+          docker run --rm -v $PWD/zap-reports:/zap/wrk/:rw owasp/zap2docker-stable zap-baseline.py \
+            -t http://host.docker.internal:5000 \
+            -r zap-report.html \
+            -J zap-report.json \
+            -z "-config api.key=${{ inputs.jwt_token }}"
+
+      - name: Upload ZAP reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-reports
+          path: zap-reports/

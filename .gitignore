@@ -5,3 +5,7 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 GasPricing.sln.DotSettings.user
+
+**/.env
+.env
+
