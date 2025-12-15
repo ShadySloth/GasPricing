@@ -8,9 +8,17 @@ on:
       - feat-dast-and-jwt
 jobs:
 
+
   dast:
     name: Run DAST
     needs: sonarqube
     uses: ./.github/workflows/dast.yml
     with:
       jwt_token: ${{ secrets.TEST_JWT_TOKEN }}
+    secrets:            # <- her sender vi den faktiske secret korrekt
+      JWT_KEY: ${{ secrets.JWT_KEY }}
+      JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
+      JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+      JWT_EXPIRES_MINUTES: ${{ secrets.JWT_EXPIRES_MINUTES }}
+      PASSWORD_PEPPER: ${{ secrets.PASSWORD_PEPPER }}
+      TEST_JWT_TOKEN: ${{ secrets.TEST_JWT_TOKEN }}
