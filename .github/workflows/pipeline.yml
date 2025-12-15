@@ -6,14 +6,6 @@ on:
     branches:
       - master
       - feat-dast-and-jwt
-name: Deployment Pipeline
-
-on:
-  workflow_dispatch:
-  pull_request:
-    branches:
-      - master
-      - feat-dast-and-jwt
 
 jobs:
   
