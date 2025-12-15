@@ -3,7 +3,8 @@ name: Deployment Pipeline
 on:
   workflow_dispatch:
   pull_request:
-
+    branches:
+      - master
 jobs:
   sbom:
     runs-on: ubuntu-latest
@@ -41,3 +42,60 @@ jobs:
           name: SBOM-Results
           path: |
             sbom.json
+
+  sonarqube:
+    name: Analyze with SonarQube
+    needs: sbom
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarQube scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarQube scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          mkdir -p "${{ runner.temp }}/scanner"
+          dotnet tool update dotnet-sonarscanner --tool-path "${{ runner.temp }}/scanner"
+
+      - name: Install dotnet-coverage
+        shell: bash
+        run: |
+          dotnet tool update dotnet-coverage --global
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Build and analyze
+        shell: bash
+        run: |
+          "${{ runner.temp }}/scanner/dotnet-sonarscanner" begin \
+            /k:"Gas-Pricing" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
+            /d:sonar.cs.vscoveragexml.reportsPaths="coverage.xml" \
+            /d:sonar.qualitygate.wait=true
+
+          dotnet build --no-incremental
+
+          dotnet-coverage collect "dotnet test" \
+            -f xml \
+            -o "coverage.xml"
+
+          "${{ runner.temp }}/scanner/dotnet-sonarscanner" end \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
