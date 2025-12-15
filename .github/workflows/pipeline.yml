@@ -8,6 +8,7 @@ on:
       - feat-dast-and-jwt
 
 jobs:
+
   dast:
     name: Run DAST
     runs-on: ubuntu-latest
