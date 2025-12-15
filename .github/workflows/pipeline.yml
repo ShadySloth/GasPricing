@@ -8,15 +8,21 @@ on:
       - feat-dast-and-jwt
 
 jobs:
-  
+
   dast:
     name: Run DAST
     needs: sonarqube
-    uses: ./.github/workflows/dast.yml
-    with:
-      jwt_token: ${{ secrets.TEST_JWT_TOKEN }}
-      jwt_key: ${{ secrets.JWT_KEY }}
-      jwt_issuer: ${{ secrets.JWT_ISSUER }}
-      jwt_audience: ${{ secrets.JWT_AUDIENCE }}
-      jwt_expires_minutes: ${{ secrets.JWT_EXPIRES_MINUTES }}
-      password_pepper: ${{ secrets.PASSWORD_PEPPER }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run DAST workflow
+        uses: ./.github/workflows/dast.yml
+        with:
+          jwt_token: ${{ secrets.TEST_JWT_TOKEN }}
+          jwt_key: ${{ secrets.JWT_KEY }}
+          jwt_issuer: ${{ secrets.JWT_ISSUER }}
+          jwt_audience: ${{ secrets.JWT_AUDIENCE }}
+          jwt_expires_minutes: ${{ secrets.JWT_EXPIRES_MINUTES }}
+          password_pepper: ${{ secrets.PASSWORD_PEPPER }}
