@@ -4,5 +4,6 @@ namespace API.Infrastructure.Interfaces;
 
 public interface IDbInitializer
 {
-    void Initialize(GasContext context);
+    void InitializeDev(GasContext context);
+    void InitializeProd(GasContext context);
 }
