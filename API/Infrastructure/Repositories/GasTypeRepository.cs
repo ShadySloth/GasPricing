@@ -17,6 +17,6 @@ public class GasTypeRepository : IGasTypeRepository
     {
         var gasType = await _context.GasTypes
             .FirstOrDefaultAsync(gt => gt.Name == name);
-        return gasType;
+        return gasType!;
     }
 }

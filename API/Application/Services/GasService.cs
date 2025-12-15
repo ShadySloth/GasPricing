@@ -17,7 +17,7 @@ public class GasService : IGasService
     public async Task<RefuelPriceDto> CalculateGasPrice(RefuelDto refuelDto)
     {
         if (refuelDto.Liters <= 0)
-            throw new ArgumentOutOfRangeException("Liters", "Liters must be greater than zero");
+            throw new ArgumentOutOfRangeException(nameof(refuelDto.Liters), "Liters must be greater than zero");
 
         var pricePerLiter = await GetGasPrice(refuelDto.GasTypeName);
 
