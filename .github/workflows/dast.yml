@@ -6,11 +6,25 @@ on:
       jwt_token:
         required: true
         type: string
+      jwt_key:
+        required: true
+        type: string
+      jwt_issuer:
+        required: true
+        type: string
+      jwt_audience:
+        required: true
+        type: string
+      jwt_expires_minutes:
+        required: true
+        type: string
+      password_pepper:
+        required: true
+        type: string
 
 jobs:
   dast:
     runs-on: ubuntu-latest
-
     services:
       api:
         image: mcr.microsoft.com/dotnet/aspnet:9.0
@@ -23,11 +37,11 @@ jobs:
           --health-retries 12
         env:
           ASPNETCORE_ENVIRONMENT: Development
-          JWT_KEY: ${{ secrets.JWT_KEY }}
-          JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
-          JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
-          JWT_EXPIRES_MINUTES: ${{ secrets.JWT_EXPIRES_MINUTES }}
-          PASSWORD_PEPPER: ${{ secrets.PASSWORD_PEPPER }}
+          JWT_KEY: ${{ inputs.jwt_key }}
+          JWT_ISSUER: ${{ inputs.jwt_issuer }}
+          JWT_AUDIENCE: ${{ inputs.jwt_audience }}
+          JWT_EXPIRES_MINUTES: ${{ inputs.jwt_expires_minutes }}
+          PASSWORD_PEPPER: ${{ inputs.password_pepper }}
 
     steps:
       - name: Checkout repo

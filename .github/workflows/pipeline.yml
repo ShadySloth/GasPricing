@@ -6,19 +6,25 @@ on:
     branches:
       - master
       - feat-dast-and-jwt
+name: Deployment Pipeline
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+      - feat-dast-and-jwt
+
 jobs:
-
-
+  
   dast:
     name: Run DAST
     needs: sonarqube
     uses: ./.github/workflows/dast.yml
     with:
       jwt_token: ${{ secrets.TEST_JWT_TOKEN }}
-    secrets:            # <- her sender vi den faktiske secret korrekt
-      JWT_KEY: ${{ secrets.JWT_KEY }}
-      JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
-      JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
-      JWT_EXPIRES_MINUTES: ${{ secrets.JWT_EXPIRES_MINUTES }}
-      PASSWORD_PEPPER: ${{ secrets.PASSWORD_PEPPER }}
-      TEST_JWT_TOKEN: ${{ secrets.TEST_JWT_TOKEN }}
+      jwt_key: ${{ secrets.JWT_KEY }}
+      jwt_issuer: ${{ secrets.JWT_ISSUER }}
+      jwt_audience: ${{ secrets.JWT_AUDIENCE }}
+      jwt_expires_minutes: ${{ secrets.JWT_EXPIRES_MINUTES }}
+      password_pepper: ${{ secrets.PASSWORD_PEPPER }}
