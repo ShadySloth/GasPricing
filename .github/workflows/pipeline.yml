@@ -4,11 +4,14 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
+      - master
       - feat-dast-and-jwt
 
 jobs:
+
   dast:
     name: Run DAST
+    needs: sonarqube
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
