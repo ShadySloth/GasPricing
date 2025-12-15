@@ -4,4 +4,8 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
+
+db
+db_user.txt
+db_password.txt
 GasPricing.sln.DotSettings.user
