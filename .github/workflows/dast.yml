@@ -24,7 +24,7 @@ jobs:
       api:
         image: mcr.microsoft.com/dotnet/aspnet:9.0
         ports:
-          - 5801:5801
+          - 6002:6002
         env:
           ASPNETCORE_ENVIRONMENT: Development
           JWT_KEY: ${{ secrets.JWT_KEY }}
@@ -45,7 +45,7 @@ jobs:
             --user root \
             -v $PWD/zap-work:/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
-            -t http://api:5801 \
+            -t http://api:6002 \
             -r zap-report.html \
             -J zap-report.json \
             -z "
