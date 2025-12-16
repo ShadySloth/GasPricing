@@ -4,7 +4,7 @@
 		"name": "GasPricing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37291644",
-		"_collection_link": "https://software-quality-compulsory.postman.co/workspace/c67ab338-10a6-48ee-a91f-4d138544b69c/collection/37291644-ee550cea-564d-4e09-84a8-7d9aca60047b?action=share&source=collection_link&creator=37291644"
+		"_collection_link": "https://software-quality-compulsory.postman.co/workspace/software-quality-compulsory-Wor~c67ab338-10a6-48ee-a91f-4d138544b69c/collection/37291644-ee550cea-564d-4e09-84a8-7d9aca60047b?action=share&source=collection_link&creator=37291644"
 	},
 	"item": [
 		{
@@ -20,10 +20,12 @@
 									"var liters = 50;\r",
 									"var gasType = \"Regular\";\r",
 									"var membership = true;\r",
+									"var expectedPrice = (liters * 12.70) * 0.85;\r",
 									"\r",
 									"pm.environment.set(\"liters\", liters);\r",
 									"pm.environment.set(\"gasType\", gasType);\r",
-									"pm.environment.set(\"membership\", membership);"
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -34,9 +36,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Regular gas price is correct\", function(){\r",
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"Regular gas price is correct with membership\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(539.75);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -79,10 +83,12 @@
 									"var liters = 50;\r",
 									"var gasType = \"Premium\";\r",
 									"var membership = true;\r",
+									"var expectedPrice = (liters * 14.50) * 0.85;\r",
 									"\r",
 									"pm.environment.set(\"liters\", liters);\r",
 									"pm.environment.set(\"gasType\", gasType);\r",
-									"pm.environment.set(\"membership\", membership);"
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -93,9 +99,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Premium gas price is correct\", function(){\r",
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"Premium gas price is correct with membership\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(616.25);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -138,10 +146,12 @@
 									"var liters = 50;\r",
 									"var gasType = \"Diesel\";\r",
 									"var membership = true;\r",
+									"var expectedPrice = (liters * 7.20) * 0.85;\r",
 									"\r",
 									"pm.environment.set(\"liters\", liters);\r",
 									"pm.environment.set(\"gasType\", gasType);\r",
-									"pm.environment.set(\"membership\", membership);"
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -152,9 +162,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Diesel gas price is correct\", function(){\r",
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"Diesel gas price is correct with membership\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(306);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -202,10 +214,12 @@
 									"var liters = 50;\r",
 									"var gasType = \"Regular\";\r",
 									"var membership = false;\r",
+									"var expectedPrice = (liters * 12.70) * 0.95;\r",
 									"\r",
 									"pm.environment.set(\"liters\", liters);\r",
 									"pm.environment.set(\"gasType\", gasType);\r",
-									"pm.environment.set(\"membership\", membership);"
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -216,9 +230,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Regular gas price is correct\", function(){\r",
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"Regular gas price is correct without membership\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(603.25);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -261,10 +277,12 @@
 									"var liters = 50;\r",
 									"var gasType = \"Premium\";\r",
 									"var membership = false;\r",
+									"var expectedPrice = (liters * 14.50) * 0.95;\r",
 									"\r",
 									"pm.environment.set(\"liters\", liters);\r",
 									"pm.environment.set(\"gasType\", gasType);\r",
-									"pm.environment.set(\"membership\", membership);"
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -275,9 +293,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Premium gas price is correct\", function(){\r",
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"Premium gas price is correct without membership\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(688.75);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -320,10 +340,12 @@
 									"var liters = 50;\r",
 									"var gasType = \"Diesel\";\r",
 									"var membership = false;\r",
+									"var expectedPrice = (liters * 7.20) * 0.95;\r",
 									"\r",
 									"pm.environment.set(\"liters\", liters);\r",
 									"pm.environment.set(\"gasType\", gasType);\r",
-									"pm.environment.set(\"membership\", membership);"
+									"pm.environment.set(\"membership\", membership);\r",
+									"pm.environment.set(\"expectedPrice\", expectedPrice);"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -334,9 +356,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Diesel gas price is correct\", function(){\r",
+									"let expectedPrice = pm.environment.get(\"expectedPrice\");\r",
+									"\r",
+									"pm.test(\"Diesel gas price is correct without membership\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
-									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(342);\r",
+									"    pm.expect(JSON.parse(pm.response.text()).totalPrice).to.equal(expectedPrice);\r",
 									"})"
 								],
 								"type": "text/javascript",
@@ -496,6 +520,20 @@
 					"name": "Calculate gas price empty gas type",
 					"event": [
 						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Empty gas type\", function(){\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.expect(pm.response.text()).to.include(\"ArgumentNullException: Gas type name cannot be null or empty (Parameter 'gasTypeName')\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
@@ -506,20 +544,6 @@
 									"pm.environment.set(\"liters\", liters);\r",
 									"pm.environment.set(\"gasType\", gasType);\r",
 									"pm.environment.set(\"membership\", membership);"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Invalid gas type\", function(){\r",
-									"    pm.response.to.have.status(500);\r",
-									"    pm.expect(pm.response.text()).to.include(\"ArgumentNullException: Gas type name cannot be null or empty (Parameter 'gasTypeName')\");\r",
-									"})"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -864,6 +888,19 @@
 								"Gas"
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "etc",
+			"item": [
+				{
+					"name": "Simple Post",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
