@@ -54,5 +54,6 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.10.0
         with:
+          format: openapi
           target: 'http://localhost:6002/swagger/v1/swagger.json'
-          token: ${{ secrets.ISSUE_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
