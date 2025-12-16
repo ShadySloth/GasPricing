@@ -123,10 +123,6 @@ jobs:
       - name: Wait for API
         run: |
           sleep 10
-      
-      - name: Check for API Examples
-        run: |
-          curl http://localhost:6002/swagger/v1/swagger.json | jq '.paths["/api/gas"].post.requestBody'
         
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.10.0
@@ -134,6 +130,7 @@ jobs:
           format: openapi
           target: 'http://localhost:6002/swagger/v1/swagger.json'
           token: ${{ secrets.ISSUE_TOKEN }}
+          cmd_options: '-J zap_report.json'
 
       - name: Fail on Medium or High alerts
         shell: bash
