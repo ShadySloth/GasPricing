@@ -1,6 +1,6 @@
 ﻿services:
   backend:
-    image: shadysloth/ExamAPI
+    image: shadysloth/examapi
     ports:
       - 6001:8080
     environment:
