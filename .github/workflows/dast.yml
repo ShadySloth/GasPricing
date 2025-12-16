@@ -1,6 +1,7 @@
 ﻿name: DAST Scan
 
 on:
+  workflow_dispatch:
   workflow_call:
     secrets:
       TEST_JWT_TOKEN:
