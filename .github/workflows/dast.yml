@@ -49,6 +49,7 @@ jobs:
           for i in {1..15}; do
             curl --fail http://localhost:6002/health && break
             sleep 5
+          curl http://localhost:6002/swagger/v1/swagger.json | jq '.paths["/api/gas"].post.requestBody'
           done
 
       - name: ZAP Scan
