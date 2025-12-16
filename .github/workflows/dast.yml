@@ -31,7 +31,7 @@ jobs:
         run: |
           docker run -d \
             --name api \
-            -p 6002:6002 \
+            -p 6002:8080 \
             -e ASPNETCORE_ENVIRONMENT=Development \
             -e JWT_KEY="${{ secrets.JWT_KEY }}" \
             -e JWT_ISSUER="${{ secrets.JWT_ISSUER }}" \
