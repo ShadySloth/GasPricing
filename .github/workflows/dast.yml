@@ -2,6 +2,9 @@
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - feat/dast-and-jwt-spinoff-electric-bugaloo
   workflow_call:
     secrets:
       TEST_JWT_TOKEN:
