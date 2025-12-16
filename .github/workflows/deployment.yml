@@ -1,4 +1,4 @@
-﻿name: deployment pipeline
+﻿name: Update docker image
 
 on:
   workflow_dispatch:
