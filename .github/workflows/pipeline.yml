@@ -130,12 +130,24 @@ jobs:
           format: openapi
           target: 'http://localhost:6002/swagger/v1/swagger.json'
           token: ${{ secrets.ISSUE_TOKEN }}
-          cmd_options: '-J zap_report.json'
+          cmd_options: '-J zap_report.json -r zap_report.html'
 
-      - name: Fail on Medium or High alerts
+      - name: Check for Medium+ alerts
+        id: zapcheck
         shell: bash
         run: |
-          # Count alerts with riskcode >= 2 (Medium=2, High=3)
           COUNT=$(jq '[.site[].alerts[]? | select((.riskcode|tonumber) >= 2)] | length' zap_report.json)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
           echo "Medium+ alert count: $COUNT"
-          test "$COUNT" -eq 0
+
+      - name: Upload ZAP reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-reports
+          path: |
+            zap_report.json
+            zap_report.html
+
+      - name: Fail job if Medium+ alerts found
+        if: ${{ steps.zapcheck.outputs.count != '0' }}
+        run: exit 1
