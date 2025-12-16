@@ -99,3 +99,42 @@ jobs:
 
           "${{ runner.temp }}/scanner/dotnet-sonarscanner" end \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+  DAST:
+    name: DAST with OWASP ZAP
+    needs: sonarqube
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build API Docker image
+        run: |
+          docker build -t gaspricing-api ./API
+
+      - name: Run API container
+        run: |
+          docker run -d \
+            --name api \
+            -p 6002:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Development \
+            gaspricing-api
+
+      - name: Wait for API
+        run: |
+          for i in {1..15}; do
+            curl --fail http://localhost:6002/health && break
+            sleep 5
+          done
+      
+      - name: Check for API Examples
+        run: |
+          curl http://localhost:6002/swagger/v1/swagger.json | jq '.paths["/api/gas"].post.requestBody'
+        
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.10.0
+        with:
+          format: openapi
+          target: 'http://localhost:6002/swagger/v1/swagger.json'
+          token: ${{ secrets.ISSUE_TOKEN }}
+          fail_action: true
