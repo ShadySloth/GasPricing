@@ -54,5 +54,5 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.10.0
         with:
-          target: 'http://localhost:6002/openapi.json'
+          target: 'http://localhost:6002/api/gas'
           token: ${{ secrets.ISSUE_TOKEN }}
