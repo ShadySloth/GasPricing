@@ -20,30 +20,40 @@ jobs:
   dast:
     runs-on: ubuntu-latest
 
-    services:
-      api:
-        image: mcr.microsoft.com/dotnet/aspnet:9.0
-        ports:
-          - 6002:6002
-        env:
-          ASPNETCORE_ENVIRONMENT: Development
-          JWT_KEY: ${{ secrets.JWT_KEY }}
-          JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
-          JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
-          JWT_EXPIRES_MINUTES: ${{ secrets.JWT_EXPIRES_MINUTES }}
-          PASSWORD_PEPPER: ${{ secrets.PASSWORD_PEPPER }}
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Build API Docker image
+        run: |
+          docker build -t gaspricing-api ./API
+
+      - name: Run API container
+        run: |
+          docker run -d \
+            --name api \
+            -p 6002:6002 \
+            -e ASPNETCORE_ENVIRONMENT=Development \
+            -e JWT_KEY="${{ secrets.JWT_KEY }}" \
+            -e JWT_ISSUER="${{ secrets.JWT_ISSUER }}" \
+            -e JWT_AUDIENCE="${{ secrets.JWT_AUDIENCE }}" \
+            -e JWT_EXPIRES_MINUTES="${{ secrets.JWT_EXPIRES_MINUTES }}" \
+            -e PASSWORD_PEPPER="${{ secrets.PASSWORD_PEPPER }}" \
+            gaspricing-api
+
+      - name: Wait for API
+        run: |
+          for i in {1..15}; do
+            curl --fail http://localhost:6002/health && break
+            sleep 5
+          done
+
       - name: Run OWASP ZAP (authenticated)
         run: |
-          mkdir -p zap-work
-
           docker pull ghcr.io/zaproxy/zaproxy:stable
 
           docker run --rm \
-            --user root \
-            -v $PWD/zap-work:/zap/wrk \
+            --network host \
+            -v $PWD:/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
             -t http://localhost:6002 \
             -r zap-report.html \
@@ -55,3 +65,11 @@ jobs:
               -config replacer.full_list(0).matchstr=Authorization
               -config replacer.full_list(0).replacement=Bearer\ ${{ secrets.TEST_JWT_TOKEN }}
             "
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: |
+            zap-report.html
+            zap-report.json
