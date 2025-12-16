@@ -56,4 +56,4 @@ jobs:
         with:
           format: openapi
           target: 'http://localhost:6002/swagger/v1/swagger.json'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ISSUE_TOKEN }}
