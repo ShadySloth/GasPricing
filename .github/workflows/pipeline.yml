@@ -99,3 +99,55 @@ jobs:
 
           "${{ runner.temp }}/scanner/dotnet-sonarscanner" end \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+  DAST:
+    name: DAST with OWASP ZAP
+    needs: sonarqube
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build API Docker image
+        run: |
+          docker build -t gaspricing-api ./API
+
+      - name: Run API container
+        run: |
+          docker run -d \
+            --name api \
+            -p 6002:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Development \
+            gaspricing-api
+
+      - name: Wait for API
+        run: |
+          sleep 10
+        
+      - name: ZAP Scan
+        uses: zaproxy/action-api-scan@v0.10.0
+        with:
+          format: openapi
+          target: 'http://localhost:6002/swagger/v1/swagger.json'
+          token: ${{ secrets.ISSUE_TOKEN }}
+          cmd_options: '-J zap_report.json -r zap_report.html'
+
+      - name: Check for Medium+ alerts
+        id: zapcheck
+        shell: bash
+        run: |
+          COUNT=$(jq '[.site[].alerts[]? | select((.riskcode|tonumber) >= 2)] | length' zap_report.json)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "Medium+ alert count: $COUNT"
+
+      - name: Upload ZAP reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-reports
+          path: |
+            zap_report.json
+            zap_report.html
+
+      - name: Fail job if Medium+ alerts found
+        if: ${{ steps.zapcheck.outputs.count != '0' }}
+        run: exit 1
