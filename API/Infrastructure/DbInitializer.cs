@@ -14,9 +14,9 @@ public class DbInitializer : IDbInitializer
 
         List<GasType> gasTypes = new()
         {
-            new GasType { Id = 1, Name = "Regular", Price = 12.70 },
-            new GasType { Id = 2, Name = "Premium", Price = 14.50 },
-            new GasType { Id = 3, Name = "Diesel", Price = 7.20 }
+            new GasType { Id = 1, Name = "Regular", Price = 12.70m },
+            new GasType { Id = 2, Name = "Premium", Price = 14.50m },
+            new GasType { Id = 3, Name = "Diesel", Price = 7.20m }
         };
         
         context.GasTypes.AddRange(gasTypes);
@@ -32,9 +32,9 @@ public class DbInitializer : IDbInitializer
         
         List<GasType> gasTypes = new()
         {
-            new GasType { Id = 1, Name = "Regular", Price = 12.70 },
-            new GasType { Id = 2, Name = "Premium", Price = 14.50 },
-            new GasType { Id = 3, Name = "Diesel", Price = 7.20 }
+            new GasType { Id = 1, Name = "Regular", Price = 12.70m },
+            new GasType { Id = 2, Name = "Premium", Price = 14.50m },
+            new GasType { Id = 3, Name = "Diesel", Price = 7.20m }
         };
         foreach (var gasType in gasTypes)
         {
