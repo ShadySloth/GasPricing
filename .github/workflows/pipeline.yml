@@ -136,7 +136,7 @@ jobs:
         id: zapcheck
         shell: bash
         run: |
-          COUNT=$(jq '[.site[].alerts[]? | select((.riskcode|tonumber) >= 2)] | length' zap_report.json)
+          COUNT=$(jq '[.site[].alerts[]? | select((.riskcode|tonumber) >= 1)] | length' zap_report.json)
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
           echo "Medium+ alert count: $COUNT"
 
