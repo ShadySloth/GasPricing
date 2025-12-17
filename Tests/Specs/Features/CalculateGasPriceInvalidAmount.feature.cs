@@ -17,21 +17,21 @@ namespace Tests.Specs.Features
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class CalculateGasPriceWithWrongGasTypeFeature : object, global::Xunit.IClassFixture<CalculateGasPriceWithWrongGasTypeFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class CalculateGasPriceWithInvalidAmountGasFeature : object, global::Xunit.IClassFixture<CalculateGasPriceWithInvalidAmountGasFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Specs/Features", "Calculate gas price with wrong gas type", "Calculate the price of gas when given an invalid gas type", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Specs/Features", "Calculate gas price with invalid amount gas", "    Calculate the price of gas when given an invalid amount of gas", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CalculateGasPriceWrongGasType.feature"
+#line 1 "CalculateGasPriceInvalidAmount.feature"
 #line hidden
         
-        public CalculateGasPriceWithWrongGasTypeFeature(CalculateGasPriceWithWrongGasTypeFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CalculateGasPriceWithInvalidAmountGasFeature(CalculateGasPriceWithInvalidAmountGasFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace Tests.Specs.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Specs/Features/CalculateGasPriceWrongGasType.feature.ndjson", 6);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Specs/Features/CalculateGasPriceInvalidAmount.feature.ndjson", 4);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,15 +133,13 @@ namespace Tests.Specs.Features
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Calculate gas price with invalid gas type")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Calculate gas price with wrong gas type")]
-        [global::Xunit.TraitAttribute("Description", "Calculate gas price with invalid gas type")]
+        [global::Xunit.SkippableTheoryAttribute(DisplayName="Calculate gas price with invalid amount")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Calculate gas price with invalid amount gas")]
+        [global::Xunit.TraitAttribute("Description", "Calculate gas price with invalid amount")]
         [global::Xunit.TraitAttribute("Category", "myTag")]
-        [global::Xunit.InlineDataAttribute("\"Electric\"", "0", new string[0])]
-        [global::Xunit.InlineDataAttribute("\"Hydrogen\"", "1", new string[0])]
-        [global::Xunit.InlineDataAttribute("\"Biofuel\"", "2", new string[0])]
-        [global::Xunit.InlineDataAttribute("\"Milk\"", "3", new string[0])]
-        public async global::System.Threading.Tasks.Task CalculateGasPriceWithInvalidGasType(string gasType, string @__pickleIndex, string[] exampleTags)
+        [global::Xunit.InlineDataAttribute("-10", "0", new string[0])]
+        [global::Xunit.InlineDataAttribute("0", "1", new string[0])]
+        public async global::System.Threading.Tasks.Task CalculateGasPriceWithInvalidAmount(string amount, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "myTag"};
@@ -151,9 +149,9 @@ namespace Tests.Specs.Features
             }
             string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("gasType", gasType);
+            argumentsOfScenario.Add("amount", amount);
             string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Calculate gas price with invalid gas type", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Calculate gas price with invalid amount", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 5
@@ -167,13 +165,13 @@ namespace Tests.Specs.Features
             {
                 await this.ScenarioStartAsync();
 #line 6
-        await testRunner.GivenAsync(string.Format("you refuel with {0} gas", gasType), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+        await testRunner.GivenAsync(string.Format("you refuel with {0} liters of gas", amount), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 7
-        await testRunner.WhenAsync("the application tries to calculates the gas price", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+        await testRunner.WhenAsync("the application attempts to calculate the gas price", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 8
-        await testRunner.ThenAsync("an error message should be displayed indicating invalid gas type", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+        await testRunner.ThenAsync("an error message should be displayed indicating an invalid amount of gas", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -186,12 +184,12 @@ namespace Tests.Specs.Features
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await CalculateGasPriceWithWrongGasTypeFeature.FeatureSetupAsync();
+                await CalculateGasPriceWithInvalidAmountGasFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await CalculateGasPriceWithWrongGasTypeFeature.FeatureTearDownAsync();
+                await CalculateGasPriceWithInvalidAmountGasFeature.FeatureTearDownAsync();
             }
         }
     }
