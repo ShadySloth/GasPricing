@@ -1,5 +1,6 @@
 ﻿using API.Application.Services;
 using API.Domain.DTOs;
+using Tests.Util;
 using Tests.Util.Fixtures;
 
 namespace Tests.UnitTests;
@@ -16,8 +17,13 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
     #region CalculateGasPrice Tests
 
     [Theory]
-    [InlineData("Regular", 10, true)]
-    public async Task CalculateGasPrice_ReturnsTotalPrice_Correctly(string gasTypeName, int liters, bool membership)
+    [MemberData(nameof(TestDataGenerator.GetValidData), MemberType = typeof(TestDataGenerator))]
+    public async Task CalculateGasPrice_ReturnsTotalPrice_Correctly(
+        string gasTypeName, 
+        int liters, 
+        bool membership, 
+        decimal expectedPrice
+        )
     {
         // Arrange
         var refuelDto = new RefuelDto
@@ -26,30 +32,6 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
             Liters = liters,
             Membership = membership
         };
-        
-        var gasPrice = gasTypeName switch
-        {
-            "Regular" => 12.70,
-            "Premium" => 14.50,
-            "Diesel" => 7.20,
-            _ => 1
-        };
-        
-        var discountPercentage = 1.00;
-        if (membership)
-        {
-            discountPercentage = 0.90;
-        }
-        
-        discountPercentage = liters switch
-        {
-            <= 20 => discountPercentage,
-            <= 50 => discountPercentage - 0.05,
-            <= 100 => discountPercentage - 0.10,
-            > 100 => discountPercentage - 0.15
-        };
-
-        var expectedPrice = liters * gasPrice * discountPercentage;
 
         var gasService = new GasService(_fixture.GasTypeRepositoryMock.Object);
         
@@ -61,9 +43,12 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
     }
     
     [Theory]
-    [InlineData("Regular", -10, false)]
-    [InlineData("Premium", 0, true)]
-    public async Task CalculateGasPrice_ForInvalidLiters_ThrowsArgumentOutOfRangeException(string gasTypeName, int liters, bool membership)
+    [MemberData(nameof(TestDataGenerator.GetDataWithWrongLiters), MemberType = typeof(TestDataGenerator))]
+    public async Task CalculateGasPrice_ForInvalidLiters_ThrowsArgumentOutOfRangeException(
+        string gasTypeName, 
+        int liters, 
+        bool membership
+        )
     {
         // Arrange
         var refuelDto = new RefuelDto
@@ -82,15 +67,20 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(result);
     }
     
-    [Fact]
-    public async Task CalculateGasPrice_ForInvalidGasType_ThrowsArgumentException()
+    [Theory]
+    [MemberData(nameof(TestDataGenerator.GetDataWithWrongGasType), MemberType = typeof(TestDataGenerator))]
+    public async Task CalculateGasPrice_ForInvalidGasType_ThrowsArgumentException(
+        string gasTypeName, 
+        int liters, 
+        bool membership
+        )
     {
         // Arrange
         var refuelDto = new RefuelDto
         {
-            GasTypeName = "Milk",
-            Liters = 10,
-            Membership = true
+            GasTypeName = gasTypeName,
+            Liters = liters,
+            Membership = membership
         };
 
         var gasService = new GasService(_fixture.GasTypeRepositoryMock.Object);
@@ -102,15 +92,20 @@ public class CalculateGasPriceTests : IClassFixture<GasFixture>
         await Assert.ThrowsAsync<ArgumentException>(result);
     }
     
-    [Fact]
-    public async Task CalculateGasPrice_ForNullGasTypeName_ThrowsArgumentNullException()
+    [Theory]
+    [MemberData(nameof(TestDataGenerator.GetDataWithNullGasType), MemberType = typeof(TestDataGenerator))]
+    public async Task CalculateGasPrice_ForNullGasTypeName_ThrowsArgumentNullException(
+        string gasTypeName, 
+        int liters, 
+        bool membership
+        )
     {
         // Arrange
         var refuelDto = new RefuelDto
         {
-            GasTypeName = null!,
-            Liters = 10,
-            Membership = false
+            GasTypeName = gasTypeName,
+            Liters = liters,
+            Membership = membership
         };
 
         var gasService = new GasService(_fixture.GasTypeRepositoryMock.Object);

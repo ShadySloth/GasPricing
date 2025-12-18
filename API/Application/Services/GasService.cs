@@ -19,31 +19,31 @@ public class GasService : IGasService
         if (refuelDto.Liters <= 0)
             throw new ArgumentOutOfRangeException(nameof(refuelDto.Liters), "Liters must be greater than zero");
 
-        var pricePerLiter = await GetGasPrice(refuelDto.GasTypeName);
+        decimal pricePerLiter = await GetGasPrice(refuelDto.GasTypeName);
 
-        var discountPercentage = 1.00;
+        decimal discountPercentage = 1.00m;
         if (refuelDto.Membership)
         {
-            discountPercentage = 0.90;
+            discountPercentage = 0.90m;
         }
 
         discountPercentage = refuelDto.Liters switch
         {
             <= 20 => discountPercentage,
-            <= 50 => discountPercentage - 0.05,
-            <= 100 => discountPercentage - 0.10,
-            > 100 => discountPercentage - 0.15
+            <= 50 => discountPercentage - 0.05m,
+            <= 100 => discountPercentage - 0.10m,
+            > 100 => discountPercentage - 0.15m
         };
 
         var totalPrice = (refuelDto.Liters * pricePerLiter) * discountPercentage;
         
         return new RefuelPriceDto
         {
-            TotalPrice = totalPrice
+            TotalPrice = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero)
         };
     }
 
-    private async Task<double> GetGasPrice(string gasTypeName)
+    private async Task<decimal> GetGasPrice(string gasTypeName)
     {
         if (string.IsNullOrEmpty(gasTypeName))
         {

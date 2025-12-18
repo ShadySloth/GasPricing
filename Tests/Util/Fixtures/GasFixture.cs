@@ -13,13 +13,13 @@ public class GasFixture
         GasTypeRepositoryMock = new Mock<IGasTypeRepository>(MockBehavior.Strict);
         
         GasTypeRepositoryMock.Setup(repo => repo.GetGasTypeByName("Regular"))
-            .ReturnsAsync(new GasType { Id = 1, Name = "Regular", Price = 12.70 });
+            .ReturnsAsync(new GasType { Id = 1, Name = "Regular", Price = 12.70m });
         
         GasTypeRepositoryMock.Setup(repo => repo.GetGasTypeByName("Premium"))
-            .ReturnsAsync(new GasType { Id = 2, Name = "Premium", Price = 14.50 });
+            .ReturnsAsync(new GasType { Id = 2, Name = "Premium", Price = 14.50m });
         
         GasTypeRepositoryMock.Setup(repo => repo.GetGasTypeByName("Diesel"))
-            .ReturnsAsync(new GasType { Id = 3, Name = "Diesel", Price = 7.20 });
+            .ReturnsAsync(new GasType { Id = 3, Name = "Diesel", Price = 7.20m });
         
         GasTypeRepositoryMock.Setup(repo => repo.GetGasTypeByName(It.Is<string>(n =>
                 n != "Regular" && n != "Premium" && n != "Diesel")))
