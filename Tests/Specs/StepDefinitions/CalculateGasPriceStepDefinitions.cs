@@ -45,7 +45,7 @@ public sealed class CalculateGasPriceStepDefinitions
     }
 
     [Then("the total price should be {double}")]
-    public void ThenTheTotalPriceShouldBe(double totalPrice)
+    public void ThenTheTotalPriceShouldBe(decimal totalPrice)
     {
         Assert.Equal(totalPrice, _result.TotalPrice);
     }
