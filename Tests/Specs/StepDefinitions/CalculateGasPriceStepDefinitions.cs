@@ -44,8 +44,8 @@ public sealed class CalculateGasPriceStepDefinitions
         _result = await _gasService.CalculateGasPrice(_refuelDto);
     }
 
-    [Then("the total price should be {double}")]
-    public void ThenTheTotalPriceShouldBe(double totalPrice)
+    [Then("the total price should be {decimal}")]
+    public void ThenTheTotalPriceShouldBe(decimal totalPrice)
     {
         Assert.Equal(totalPrice, _result.TotalPrice);
     }
